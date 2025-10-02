@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #d97706;
+  --primary-foreground: #ffffff;
+  --secondary: #fef3c7;
+  --secondary-foreground: #92400e;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --accent: #fbbf24;
+  --accent-foreground: #92400e;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #d97706;
+  --radius: 0.5rem;
+
+  /* Coffee Penguin brand palette */
+  --coffee-black: #2d1810;
+  --coffee-brown: #4a2c2a;
+  --coffee-cream: #d4c4a8;
+  --vintage-beige: #f5f1e8;
+  --paper-white: #faf9f6;
+  --copper-accent: #b87333;
+  --charcoal: #36454f;
+  --warm-gray: #8b8680;
+  --light-gray: #e6e3dc;
+
+
+  /* semantic tokens */
+  --bg-primary: var(--paper-white);
+  --text-primary: var(--coffee-black);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --primary: #f59e0b;
+    --primary-foreground: #000000;
+    --secondary: #451a03;
+    --secondary-foreground: #fbbf24;
+    --muted: #1f2937;
+    --muted-foreground: #9ca3af;
+    --accent: #f59e0b;
+    --accent-foreground: #000000;
+    --border: #374151;
+    --input: #374151;
+
+    /* dark theme for brand */
+    --bg-primary: var(--coffee-brown);
+    --text-primary: var(--coffee-cream);
+  }
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Coffee Penguin テーマカラー */
+.text-coffee {
+  color: #8b4513;
+}
+
+.bg-coffee {
+  background-color: #8b4513;
+}
+
+.text-amber-coffee {
+  color: #d97706;
+}
+
+.bg-amber-coffee {
+  background-color: #d97706;
+}
+
+/* Typography hierarchy */
+.text-hero {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--coffee-black);
+  letter-spacing: -0.02em;
+}
+
+.text-body {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--charcoal);
+  font-weight: 400;
+}
+
+.text-caption {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--warm-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Card design */
+.card {
+  background: var(--paper-white);
+  border: 1px solid var(--light-gray);
+  border-radius: 16px;
+  padding: 32px;
+  transition: all 0.4s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: var(--copper-accent);
+  transition: left 0.5s ease;
+}
+
+.card:hover::before {
+  left: 0;
+}
+
+/* Button primary style (brand) */
+.btn-primary {
+  background: var(--coffee-brown);
+  color: var(--paper-white);
+  border: none;
+  border-radius: 28px;
+  padding: 16px 32px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover {
+  background: var(--coffee-black);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(45, 24, 16, 0.2);
+}
+
+/* Moka animation */
+.moka-character {
+  animation: gentle-float 4s ease-in-out infinite;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 4px 8px rgba(45, 24, 16, 0.15));
+}
+
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+.moka-character:hover {
+  transform: scale(1.05) rotate(5deg);
+  filter: drop-shadow(0 8px 16px rgba(45, 24, 16, 0.25));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moka-character * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Theme data attributes */
+[data-theme="light"] {
+  --bg-primary: var(--paper-white);
+  --text-primary: var(--coffee-black);
+}
+
+[data-theme="dark"] {
+  --bg-primary: var(--coffee-black);
+  --text-primary: var(--coffee-cream);
+}
+
+/* カスタムスクロールバー */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+
+
