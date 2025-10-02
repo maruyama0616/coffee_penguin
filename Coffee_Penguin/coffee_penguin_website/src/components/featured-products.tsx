@@ -32,6 +32,12 @@ async function fetchFeaturedProducts() {
   let products: NormalizedProduct[] = []
   let source: FeaturedSource = "none"
 
+  console.log('Environment check:', {
+    SUZURI_API_KEY: process.env.SUZURI_API_KEY ? 'Set' : 'Not set',
+    SUZURI_SHOP_USERNAME: process.env.SUZURI_SHOP_USERNAME || 'Using default',
+    DEFAULT_SUZURI_USERNAME
+  })
+
   try {
     const response = await suzuriClient.getPopularProducts({
       limit: FEATURED_LIMIT,
