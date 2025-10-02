@@ -13,12 +13,6 @@ function sortByTimestamp(items: GalleryItem[]) {
 }
 
 export async function InstagramFeed() {
-  console.log('Instagram/YouTube Environment check:', {
-    INSTAGRAM_ACCESS_TOKEN: process.env.INSTAGRAM_ACCESS_TOKEN ? 'Set' : 'Not set',
-    YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY ? 'Set' : 'Not set',
-    YOUTUBE_CHANNEL_ID: process.env.YOUTUBE_CHANNEL_ID || 'Not set'
-  })
-
   const [instagramPosts, youtubeVideos] = await Promise.all([
     getInstagramPosts(LATEST_POST_LIMIT * 2),
     getYouTubeVideos(LATEST_POST_LIMIT * 2),

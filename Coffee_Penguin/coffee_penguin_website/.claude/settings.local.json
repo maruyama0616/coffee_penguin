@@ -13,7 +13,10 @@
       "Bash(npm run build:*)",
       "Bash(npx prisma generate:*)",
       "Bash(npm run dev:*)",
-      "Bash(curl -s \"http://localhost:3000/api/suzuri/products\")"
+      "Bash(curl -s \"http://localhost:3000/api/suzuri/products\")",
+      "Bash(curl -H \"Authorization: Bearer wLJS99Y8N7zo1O4ryWGy7IQNdXA-n9YY8ZfS2wlJk3o\" -H \"Content-Type: application/json\" \"https://suzuri.jp/api/v1/products?limit=5\")",
+      "Bash(curl -H \"Authorization: Bearer wLJS99Y8N7zo1O4ryWGy7IQNdXA-n9YY8ZfS2wlJk3o\" -H \"Content-Type: application/json\" \"https://suzuri.jp/api/v1/products?limit=10&userName=CoffeePenguin\")",
+      "Bash(curl -s \"http://localhost:3001/\")"
     ],
     "deny": [],
     "ask": []

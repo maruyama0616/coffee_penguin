@@ -116,6 +116,8 @@ export class SuzuriApiClient {
 
   async getPopularProducts({ limit = 20, offset = 0, userName }: GetProductsParams = {}): Promise<SuzuriApiResponse> {
     try {
+      // For popular products, use the regular products endpoint with userName filter
+      // /products/on_sale doesn't properly filter by userName
       const params = new URLSearchParams({
         limit: limit.toString(),
         offset: offset.toString(),
@@ -125,7 +127,7 @@ export class SuzuriApiClient {
         params.append('userName', userName)
       }
 
-      const response = await this.fetchWithAuth(`/products/on_sale?${params.toString()}`)
+      const response = await this.fetchWithAuth(`/products?${params.toString()}`)
       return response
     } catch (error) {
       console.error('Failed to fetch popular Suzuri products:', error)
