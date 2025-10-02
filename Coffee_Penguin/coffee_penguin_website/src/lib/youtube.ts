@@ -20,7 +20,7 @@ interface YouTubeSearchResponse {
   }>
 }
 
-function pickThumbnail(snippet?: YouTubeSearchResponse['items'][number]['snippet']) {
+function pickThumbnail(snippet?: NonNullable<YouTubeSearchResponse['items']>[number]['snippet']) {
   const candidates = [
     snippet?.thumbnails?.maxres?.url,
     snippet?.thumbnails?.high?.url,
@@ -65,7 +65,7 @@ export async function getYouTubeVideos(limit = 4): Promise<GalleryItem[]> {
   const payload = (await response.json()) as YouTubeSearchResponse
   const items = payload.items ?? []
 
-  const videos: GalleryItem[] = items
+  const videos = items
     .map((item) => {
       const videoId = item.id?.videoId
       const snippet = item.snippet
@@ -87,16 +87,16 @@ export async function getYouTubeVideos(limit = 4): Promise<GalleryItem[]> {
         title: snippet.title || 'YouTube動画',
         description: snippet.description || 'YouTube動画',
         caption: snippet.description,
-        mediaType: 'VIDEO',
+        mediaType: 'VIDEO' as const,
         mediaUrl,
         thumbnailUrl: mediaUrl,
         permalink,
         timestamp: snippet.publishedAt || new Date().toISOString(),
-        platform: 'YouTube',
+        platform: 'YouTube' as const,
         embedUrl,
       }
     })
-    .filter((video): video is GalleryItem => video !== null)
+    .filter(Boolean) as GalleryItem[]
 
   return videos.slice(0, limit)
 }

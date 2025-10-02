@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Instagram, Youtube, Music } from 'lucide-react'
 import { XLogo } from '@/components/common/x-logo'
 
@@ -50,11 +51,12 @@ export function Footer() {
           {/* ブランド情報 */}
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center space-x-2 mb-4">
-              <img
+              <Image
                 src="/images/Coffee Penguin Logo White.png"
                 alt="Coffee Penguin ロゴ"
+                width={48}
+                height={48}
                 className="h-12 w-auto object-contain"
-                loading="lazy"
               />
             </div>
             <p className="text-gray-400 text-sm mb-4">

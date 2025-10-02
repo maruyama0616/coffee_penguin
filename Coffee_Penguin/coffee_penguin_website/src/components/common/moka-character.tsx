@@ -81,7 +81,7 @@ export function MokaCharacter({ pose, size = "large", className = "" }: MokaChar
           <motion.div
             className="absolute inset-0 rounded-full"
             style={{ background: "var(--coffee-brown)" }}
-            animate={animation.body}
+            animate={Array.isArray(animation.body) ? animation.body[0] : animation.body}
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
             {/* Belly */}
@@ -91,7 +91,7 @@ export function MokaCharacter({ pose, size = "large", className = "" }: MokaChar
             <motion.div
               className="absolute -right-1 top-4 w-3 h-8 rounded"
               style={{ border: "2px solid var(--coffee-black)" }}
-              animate={animation.arm}
+              animate={animation.arm && (Array.isArray(animation.arm) ? animation.arm[0] : animation.arm)}
               transition={{ duration: 0.6, ease: "easeInOut" }}
             />
 
