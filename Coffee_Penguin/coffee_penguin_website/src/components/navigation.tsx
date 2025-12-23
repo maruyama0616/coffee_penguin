@@ -34,6 +34,7 @@ export function Navigation() {
             borderColor: 'rgba(212,196,168,0.16)',
           }}
         >
+          {/* デスクトップ版: 左側ナビゲーション */}
           <div className="hidden md:flex items-center space-x-6">
             {leftNavigation.map((item) => (
               <Link
@@ -47,6 +48,20 @@ export function Navigation() {
             ))}
           </div>
 
+          {/* モバイル版: ハンバーガーメニュー（左側） */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="メニューを開く"
+              className="text-white/90"
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
+          </div>
+
+          {/* 中央: ロゴ */}
           <div className="absolute left-1/2 -translate-x-1/2">
             <Link href="/" className="flex items-center justify-center" aria-label="Coffee Penguin">
               <img
@@ -58,6 +73,7 @@ export function Navigation() {
             </Link>
           </div>
 
+          {/* デスクトップ版: 右側ナビゲーション */}
           <div className="hidden md:flex items-center space-x-6">
             {rightNavigation.map((item) => (
               <Link
@@ -71,29 +87,17 @@ export function Navigation() {
             ))}
           </div>
 
-          {/* モバイル版: ショップアイコンとメニューボタン */}
-          <div className="md:hidden flex items-center gap-2">
-            {/* Suzuriショップへのリンク */}
+          {/* モバイル版: ショップアイコン（右側） */}
+          <div className="md:hidden">
             <Link
               href="https://suzuri.jp/CoffeePenguin"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Suzuriショップ"
-              className="p-2 rounded-full hover:bg-white/10 transition-colors"
+              className="p-2 rounded-full hover:bg-white/10 transition-colors inline-block"
             >
               <ShoppingBag className="h-5 w-5 text-white/90" />
             </Link>
-            
-            {/* メニューボタン */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="メニューを開く"
-              className="text-white/90"
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
           </div>
         </div>
       </div>
