@@ -50,9 +50,9 @@ export function Navigation() {
           <div className="absolute left-1/2 -translate-x-1/2">
             <Link href="/" className="flex items-center justify-center" aria-label="Coffee Penguin">
               <img
-                src="/images/Coffee Penguin Logo White.png"
-                alt="Coffee Penguin ロゴ"
-                className="block h-16 md:h-18 w-auto object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.28)]"
+                src="/images/mocha-logo-header.png"
+                alt="Mocha the Coffee Penguin"
+                className="block h-8 md:h-10 w-auto object-contain"
                 loading="lazy"
               />
             </Link>
