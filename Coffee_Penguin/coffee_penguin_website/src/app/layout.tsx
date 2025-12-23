@@ -41,16 +41,14 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        style={{ background: "var(--cream)" }}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-cream`}
       >
         <Navigation />
         <div
-          className="h-16"
-          style={{ background: "var(--cream)" }}
+          className="h-16 bg-cream"
           aria-hidden="true"
         />
-        <main className="min-h-screen" style={{ background: "var(--cream)" }}>
+        <main className="min-h-screen bg-cream">
           {children}
         </main>
         <div data-moka-section="footer">

@@ -1,9 +1,9 @@
 export function MokaProfile() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="order-2 lg:order-1">
         <div className="relative">
-          <div className="aspect-square bg-gradient-to-br from-amber-200 to-orange-300 rounded-2xl shadow-2xl overflow-hidden">
+          <div className="aspect-square rounded-2xl shadow-2xl overflow-hidden" style={{ background: "var(--warm-beige)" }}>
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
                 <div className="w-32 h-32 bg-white/80 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">

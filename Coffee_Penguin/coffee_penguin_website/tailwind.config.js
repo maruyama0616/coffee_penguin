@@ -33,6 +33,11 @@ module.exports = {
         border: 'var(--border)',
         input: 'var(--input)',
         ring: 'var(--ring)',
+        'coffee-dark': 'var(--coffee-dark)',
+        'coffee-medium': 'var(--coffee-medium)',
+        'coffee-light': 'var(--coffee-light)',
+        'warm-beige': 'var(--warm-beige)',
+        'cream': 'var(--cream)',
       },
       borderRadius: {
         lg: 'var(--radius)',
