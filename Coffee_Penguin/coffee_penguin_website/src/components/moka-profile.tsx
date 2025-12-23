@@ -1,36 +1,45 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { Coffee, Heart, Sparkles, Calendar, User, Cake } from 'lucide-react'
+import { Coffee, Heart, Sparkles, Calendar, User, Cake, Instagram, Music, Youtube } from 'lucide-react'
 import { XLogo } from '@/components/common/x-logo'
+import type { LucideIcon } from 'lucide-react'
+
+interface SocialLink {
+  name: string
+  username: string
+  url: string
+  icon: LucideIcon | string
+  color: string
+}
 
 export function MokaProfile() {
-  const socialLinks = [
+  const socialLinks: SocialLink[] = [
     {
       name: 'X',
       username: '@_coffeepenguin',
       url: 'https://twitter.com/_CoffeePenguin',
-      icon: XLogo,
+      icon: XLogo as LucideIcon,
       color: 'from-blue-400 to-blue-600',
     },
     {
       name: 'Instagram',
       username: '@_coffeepenguin',
       url: 'https://instagram.com/_coffeepenguin',
-      icon: '📷',
+      icon: Instagram,
       color: 'from-pink-500 via-purple-500 to-orange-500',
     },
     {
       name: 'TikTok',
       username: '@_coffeepenguin',
       url: 'https://tiktok.com/@_coffeepenguin',
-      icon: '🎵',
+      icon: Music,
       color: 'from-gray-800 to-teal-500',
     },
     {
       name: 'YouTube',
       username: '@_coffeepenguin',
       url: 'https://youtube.com/@_coffeepenguin',
-      icon: '▶️',
+      icon: Youtube,
       color: 'from-red-500 to-red-600',
     },
   ]
@@ -214,11 +223,7 @@ export function MokaProfile() {
               >
                 <div className="flex flex-col items-center text-center gap-3">
                   <div className={`w-14 h-14 bg-gradient-to-br ${social.color} rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
-                    {Icon ? (
-                      <Icon className="w-7 h-7 text-white" />
-                    ) : (
-                      <span className="text-2xl">{social.icon}</span>
-                    )}
+                    {Icon && <Icon className="w-7 h-7 text-white" />}
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-coffee-dark group-hover:text-purple-600 transition-colors">
