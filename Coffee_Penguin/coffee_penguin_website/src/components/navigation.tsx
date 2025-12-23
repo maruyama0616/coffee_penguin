@@ -5,7 +5,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ShoppingBag } from 'lucide-react'
 
 const leftNavigation = [
   { name: 'About', href: '/about' },
@@ -71,7 +71,20 @@ export function Navigation() {
             ))}
           </div>
 
-          <div className="md:hidden flex items-center">
+          {/* モバイル版: ショップアイコンとメニューボタン */}
+          <div className="md:hidden flex items-center gap-2">
+            {/* Suzuriショップへのリンク */}
+            <Link
+              href="https://suzuri.jp/CoffeePenguin"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Suzuriショップ"
+              className="p-2 rounded-full hover:bg-white/10 transition-colors"
+            >
+              <ShoppingBag className="h-5 w-5 text-white/90" />
+            </Link>
+            
+            {/* メニューボタン */}
             <Button
               variant="ghost"
               size="icon"
