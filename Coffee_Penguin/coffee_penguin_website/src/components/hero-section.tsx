@@ -1,7 +1,4 @@
 import Image from 'next/image'
-import Link from 'next/link'
-
-// import mochaFront03 from '@/images/Mocha/Mocha Front 03.png'
 
 export function HeroSection() {
   return (
@@ -18,74 +15,28 @@ export function HeroSection() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          
-          {/* 左側: 大胆なMochaのビジュアル */}
-          <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
-            <div className="relative">
-              {/* メインキャラクター */}
-              <div className="moka-character relative z-20">
-                <div className="w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] lg:w-[500px] lg:h-[500px]">
-                  <Image
-                    src="/images/mocha-hero-new.png"
-                    alt="Mocha the Coffee Penguin"
-                    width={500}
-                    height={500}
-                    className="w-full h-full object-contain drop-shadow-2xl"
-                    priority
-                    sizes="(min-width: 1024px) 500px, (min-width: 640px) 400px, 280px"
-                  />
-                </div>
+        <div className="flex justify-center items-center">
+          {/* 中央: Mochaのビジュアルのみ */}
+          <div className="relative">
+            {/* メインキャラクター */}
+            <div className="moka-character relative z-20">
+              <div className="w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] lg:w-[500px] lg:h-[500px]">
+                <Image
+                  src="/images/mocha-hero-new.png"
+                  alt="Mocha the Coffee Penguin"
+                  width={500}
+                  height={500}
+                  className="w-full h-full object-contain drop-shadow-2xl"
+                  priority
+                  sizes="(min-width: 1024px) 500px, (min-width: 640px) 400px, 280px"
+                />
               </div>
-              
-              {/* 装飾的な円 */}
-              <div className="absolute -top-8 -left-8 w-32 h-32 rounded-full bg-steel-blue/20 blur-2xl -z-10"></div>
-              <div className="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-warm-beige/30 blur-3xl -z-10"></div>
             </div>
-          </div>
-
-          {/* 右側: キャッチコピーとナビゲーション */}
-          <div className="order-1 lg:order-2 text-center lg:text-left space-y-8">
             
-            {/* 小さなバッジ */}
-            <div className="inline-flex items-center bg-white/60 backdrop-blur-sm rounded-full px-5 py-2.5 border border-coffee-light/20 shadow-sm">
-              <div className="w-2 h-2 bg-coffee-medium rounded-full mr-3 animate-pulse"></div>
-              <span className="text-sm font-medium text-coffee-dark tracking-wide">Mocha the Coffee Penguin</span>
-            </div>
-
-            {/* メインキャッチコピー */}
-            <h1 className="space-y-2">
-              <span className="block text-5xl sm:text-6xl lg:text-7xl font-light text-coffee-dark leading-tight tracking-tight">
-                静けさの中で、
-              </span>
-              <span className="block text-5xl sm:text-6xl lg:text-7xl font-light text-coffee-medium leading-tight tracking-tight">
-                ゆっくりと。
-              </span>
-            </h1>
-
-            {/* サブコピー */}
-            <p className="text-lg sm:text-xl text-text-secondary leading-relaxed max-w-md mx-auto lg:mx-0">
-              コーヒーを淹れるように、丁寧に。<br />
-              モカと一緒に、心を整える時間を。
-            </p>
-
-            {/* CTAボタン群 - シンプルに */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
-              <Link 
-                href="/stories" 
-                className="inline-flex items-center justify-center px-8 py-4 bg-coffee-dark text-white rounded-full font-medium hover:bg-coffee-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-              >
-                物語を読む
-              </Link>
-              <Link 
-                href="/about" 
-                className="inline-flex items-center justify-center px-8 py-4 bg-white/80 backdrop-blur-sm text-coffee-dark rounded-full font-medium border border-coffee-light/30 hover:bg-white hover:border-coffee-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-              >
-                モカについて
-              </Link>
-            </div>
+            {/* 装飾的な円 */}
+            <div className="absolute -top-8 -left-8 w-32 h-32 rounded-full bg-steel-blue/20 blur-2xl -z-10"></div>
+            <div className="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-warm-beige/30 blur-3xl -z-10"></div>
           </div>
-
         </div>
       </div>
 
