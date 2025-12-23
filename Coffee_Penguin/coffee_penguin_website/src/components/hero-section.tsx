@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import mochaFront03 from '@/images/Mocha/Mocha Front 03.png'
+// import mochaFront03 from '@/images/Mocha/Mocha Front 03.png'
 
 export function HeroSection() {
   return (
@@ -27,8 +27,10 @@ export function HeroSection() {
               <div className="moka-character relative z-20">
                 <div className="w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] lg:w-[500px] lg:h-[500px]">
                   <Image
-                    src={mochaFront03}
+                    src="/images/mocha-hero-new.png"
                     alt="Mocha the Coffee Penguin"
+                    width={500}
+                    height={500}
                     className="w-full h-full object-contain drop-shadow-2xl"
                     priority
                     sizes="(min-width: 1024px) 500px, (min-width: 640px) 400px, 280px"
