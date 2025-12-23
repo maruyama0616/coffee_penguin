@@ -1,18 +1,16 @@
+/* eslint-disable @next/next/no-img-element */
+
 export function MokaProfile() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="order-2 lg:order-1">
         <div className="relative">
           <div className="aspect-square rounded-2xl shadow-2xl overflow-hidden" style={{ background: "var(--warm-beige)" }}>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-32 h-32 bg-white/80 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                  <span className="text-6xl">??</span>
-                </div>
-                <p className="text-gray-600 font-medium">モカのプロフィール写真</p>
-                <p className="text-sm text-gray-500">（実際の写真に差し替え予定）</p>
-              </div>
-            </div>
+            <img
+              src="/images/mocha-profile.png"
+              alt="モカのプロフィール写真"
+              className="w-full h-full object-contain p-8"
+            />
           </div>
 
           <div className="absolute -top-4 -right-4 w-16 h-16 bg-white/80 rounded-full flex items-center justify-center shadow-lg">
@@ -35,17 +33,36 @@ export function MokaProfile() {
 
           <div>
             <h3 className="text-xl font-semibold text-gray-900 mb-3">年齢</h3>
-            <p className="text-gray-600">（推定20歳前後）</p>
+            <p className="text-gray-600">8歳（人間でいうと25歳くらい）</p>
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">好きなこと</h3>
-            <p className="text-gray-600">朝のコーヒー、街歩き、イラスト、読書</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">種族</h3>
+            <p className="text-gray-600">コーヒーペンギン</p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">好きなもの</h3>
+            <p className="text-gray-600">コーヒー、温かい場所、人との会話、新しい発見</p>
           </div>
 
           <div>
             <h3 className="text-xl font-semibold text-gray-900 mb-3">性格</h3>
-            <p className="text-gray-600">人なつっこくて、コーヒー談義を始めると止まらないタイプ</p>
+            <p className="text-gray-600">
+              人懐っこくて好奇心旺盛。コーヒーを淹れることと飲むことが大好きで、
+              コーヒーの話になると目を輝かせて語り出します。
+              少し天然なところもありますが、周りの人を笑顔にする温かい存在です。
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">特技</h3>
+            <p className="text-gray-600">コーヒーの淹れ方、ラテアート、人を笑顔にすること</p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">チャームポイント</h3>
+            <p className="text-gray-600">頭の上のコーヒーポット型の帽子と、いつも持っているコーヒーカップ</p>
           </div>
         </div>
       </div>
