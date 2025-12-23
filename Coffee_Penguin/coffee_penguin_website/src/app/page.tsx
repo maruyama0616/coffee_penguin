@@ -12,27 +12,27 @@ export default function Home() {
       <PromoSlider />
 
       {/* モカの紹介セクション */}
-      <section data-moka-section="about" className="py-24" style={{ background: "var(--cream)" }}>
+      <section data-moka-section="about" className="py-24">
         <MokaProfile />
       </section>
 
       {/* グッズセクション - ライフスタイル提案型 */}
-      <section data-moka-section="shop" className="py-24 bg-white">
+      <section data-moka-section="shop" className="py-24">
         <FeaturedProducts />
       </section>
 
       {/* Instagramセクション - 視覚的な世界観の拡張 */}
-      <section data-moka-section="instagram" className="py-24" style={{ background: "var(--cream)" }}>
+      <section data-moka-section="instagram" className="py-24">
         <InstagramFeed />
       </section>
 
       {/* 最新ニュースセクション - シンプルに */}
-      <section data-moka-section="news" className="py-20 bg-white">
+      <section data-moka-section="news" className="py-20">
         <LatestNews />
       </section>
 
       {/* SNSセクション - 主要なSNSに絞り、控えめに */}
-      <section data-moka-section="sns" className="py-20" style={{ background: "var(--steel-blue-light)" }}>
+      <section data-moka-section="sns" className="py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             title="SNSでつながる"
