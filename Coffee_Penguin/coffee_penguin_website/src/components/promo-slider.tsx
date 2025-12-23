@@ -50,7 +50,7 @@ export function PromoSlider() {
   return (
     <section className="relative w-full px-4 sm:px-6 lg:px-8 py-4">
       <div className="max-w-7xl mx-auto">
-        <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] overflow-hidden rounded-[20px] shadow-[0_8px_24px_rgba(45,24,16,0.25)]">
+        <div className="relative w-full aspect-video overflow-hidden rounded-[20px] shadow-[0_8px_24px_rgba(45,24,16,0.25)]">
           {/* スライド画像 */}
           {promoSlides.map((slide, index) => (
             <div
