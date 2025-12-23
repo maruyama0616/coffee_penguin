@@ -9,11 +9,12 @@ import { Menu, X } from 'lucide-react'
 
 const leftNavigation = [
   { name: 'About', href: '/about' },
+  { name: 'Stories', href: '/stories' },
   { name: 'Gallery', href: '/gallery' },
-  { name: 'News', href: '/news' },
 ]
 
 const rightNavigation = [
+  { name: 'News', href: '/news' },
   { name: 'Shop', href: '/shop' },
   { name: 'Contact', href: '/contact' },
 ]

@@ -18,21 +18,50 @@
   --ring: #d97706;
   --radius: 0.5rem;
 
-  /* Coffee Penguin brand palette */
-  --coffee-black: #2d1810;
-  --coffee-brown: #4a2c2a;
-  --coffee-cream: #d4c4a8;
-  --vintage-beige: #f5f1e8;
-  --paper-white: #faf9f6;
-  --copper-accent: #b87333;
-  --charcoal: #36454f;
-  --warm-gray: #8b8680;
-  --light-gray: #e6e3dc;
+  /* Mocha the Coffee Penguin Design System - カラーパレット */
+  --coffee-dark: #4A3728;
+  --coffee-medium: #6B4E3D;
+  --coffee-light: #8B6F47;
+  --warm-beige: #E8DCC4;
+  --cream: #F5F1E8;
+  --steel-blue: #B0C4D8;
+  --steel-blue-light: #D4E1ED;
+  --white: #FFFFFF;
+  --text-primary: #3A3A3A;
+  --text-secondary: #6B6B6B;
+  --text-muted: #9A9A9A;
+  
+  /* Legacy colors for compatibility */
+  --coffee-black: #4A3728;
+  --coffee-brown: #6B4E3D;
+  --coffee-cream: #E8DCC4;
+  --vintage-beige: #F5F1E8;
+  --paper-white: #F5F1E8;
+  --copper-accent: #8B6F47;
+  --charcoal: #3A3A3A;
+  --warm-gray: #6B6B6B;
+  --light-gray: #D4E1ED;
 
 
-  /* semantic tokens */
-  --bg-primary: var(--paper-white);
-  --text-primary: var(--coffee-black);
+  /* Semantic tokens */
+  --bg-primary: var(--cream);
+  --text-primary: var(--coffee-dark);
+  
+  /* Spacing - 余白を贅沢に */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 4rem;
+  --spacing-xl: 6rem;
+  --spacing-2xl: 8rem;
+  
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+  --font-handwriting: 'Klee One', 'Zen Maru Gothic', cursive;
+  
+  /* Animation - 控えめで優しい */
+  --transition-gentle: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -63,7 +92,11 @@
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  line-height: 1.8;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Coffee Penguin テーマカラー */
