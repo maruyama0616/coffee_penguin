@@ -2,7 +2,7 @@ import { PromoSlider } from '@/components/promo-slider'
 import { MokaProfile } from '@/components/moka-profile'
 import { FeaturedProducts } from '@/components/featured-products'
 import { InstagramFeed } from '@/components/instagram-feed'
-import { LatestNews } from '@/components/latest-news'
+
 import { SectionHeader } from '@/components/common/section-header'
 
 export default function Home() {
@@ -24,11 +24,6 @@ export default function Home() {
       {/* Instagramセクション - 視覚的な世界観の拡張 */}
       <section data-moka-section="instagram" className="py-24">
         <InstagramFeed />
-      </section>
-
-      {/* 最新ニュースセクション - シンプルに */}
-      <section data-moka-section="news" className="py-20">
-        <LatestNews />
       </section>
 
       {/* SNSセクション - 主要なSNSに絞り、控えめに */}

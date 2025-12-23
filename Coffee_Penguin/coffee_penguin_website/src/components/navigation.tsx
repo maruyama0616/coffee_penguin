@@ -14,7 +14,6 @@ const leftNavigation = [
 ]
 
 const rightNavigation = [
-  { name: 'News', href: '/news' },
   { name: 'Shop', href: '/shop' },
   { name: 'Contact', href: '/contact' },
 ]

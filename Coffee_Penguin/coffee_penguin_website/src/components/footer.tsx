@@ -30,7 +30,6 @@ const footerLinks = {
   company: [
     { name: 'About', href: '/about' },
     { name: 'Gallery', href: '/gallery' },
-    { name: 'News', href: '/news' },
   ],
   shop: [
     { name: 'Shop', href: '/shop' },
