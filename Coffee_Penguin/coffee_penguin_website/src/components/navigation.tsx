@@ -48,7 +48,7 @@ export function Navigation() {
           </div>
 
           {/* モバイル版: ハンバーガーメニュー（左側） */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center">
             <Button
               variant="ghost"
               size="icon"
@@ -87,15 +87,15 @@ export function Navigation() {
           </div>
 
           {/* モバイル版: ショップアイコン（右側） */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center">
             <Link
               href="https://suzuri.jp/CoffeePenguin"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Suzuriショップ"
-              className="p-2 rounded-full hover:bg-white/10 transition-colors inline-block"
+              className="p-2 rounded-full hover:bg-white/10 transition-colors flex items-center justify-center"
             >
-              <ShoppingBag className="h-5 w-5 text-white/90" />
+              <ShoppingBag className="h-6 w-6 text-white/90" />
             </Link>
           </div>
         </div>
