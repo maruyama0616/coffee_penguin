@@ -1,6 +1,4 @@
-import { HeroSection } from '@/components/hero-section'
 import { PromoSlider } from '@/components/promo-slider'
-import { FeaturedStories } from '@/components/featured-stories'
 import { MokaProfile } from '@/components/moka-profile'
 import { FeaturedProducts } from '@/components/featured-products'
 import { InstagramFeed } from '@/components/instagram-feed'
@@ -10,18 +8,10 @@ import { SectionHeader } from '@/components/common/section-header'
 export default function Home() {
   return (
     <div className="min-h-screen">
-      {/* ヒーローセクション - 画面全体を使った大胆なビジュアル */}
-      <HeroSection />
-
-      {/* 広告スライダー - グッズやLINEスタンプの宣伝 */}
+      {/* 広告スライダー - ヘッダー直下に配置 */}
       <PromoSlider />
 
-      {/* Web漫画セクション - サイトの主役として最上位に配置 */}
-      <section data-moka-section="stories" className="py-24 bg-white">
-        <FeaturedStories />
-      </section>
-
-      {/* モカの紹介セクション - 物語の次に、キャラクターを知ってもらう */}
+      {/* モカの紹介セクション */}
       <section data-moka-section="about" className="py-24" style={{ background: "var(--cream)" }}>
         <MokaProfile />
       </section>
