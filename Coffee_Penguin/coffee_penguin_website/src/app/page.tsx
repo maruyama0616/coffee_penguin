@@ -1,4 +1,5 @@
 import { HeroSection } from '@/components/hero-section'
+import { PromoSlider } from '@/components/promo-slider'
 import { FeaturedStories } from '@/components/featured-stories'
 import { MokaProfile } from '@/components/moka-profile'
 import { FeaturedProducts } from '@/components/featured-products'
@@ -11,6 +12,9 @@ export default function Home() {
     <div className="min-h-screen">
       {/* ヒーローセクション - 画面全体を使った大胆なビジュアル */}
       <HeroSection />
+
+      {/* 広告スライダー - グッズやLINEスタンプの宣伝 */}
+      <PromoSlider />
 
       {/* Web漫画セクション - サイトの主役として最上位に配置 */}
       <section data-moka-section="stories" className="py-24 bg-white">
