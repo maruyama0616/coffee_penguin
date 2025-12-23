@@ -1,4 +1,5 @@
 import { PromoSlider } from '@/components/promo-slider'
+import { SocialIcons } from '@/components/social-icons'
 import { MokaProfile } from '@/components/moka-profile'
 import { FeaturedProducts } from '@/components/featured-products'
 
@@ -7,6 +8,9 @@ export default function Home() {
     <div className="min-h-screen">
       {/* 広告スライダー - ヘッダー直下に配置 */}
       <PromoSlider />
+
+      {/* SNSアイコンリンク */}
+      <SocialIcons />
 
       {/* モカの紹介セクション */}
       <section data-moka-section="about" className="py-24">
