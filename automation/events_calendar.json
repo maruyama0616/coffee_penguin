@@ -1,0 +1,200 @@
+{
+  "01-01": {
+    "name": "元日",
+    "theme": "新年の抱負とコーヒーで新しいスタート",
+    "keywords": ["新年", "初日の出", "おめでとう", "抱負"],
+    "prompt_addition": "celebrating New Year with sparkles and sunrise, holding a coffee cup with hope and joy"
+  },
+  "01-07": {
+    "name": "七草粥の日",
+    "theme": "体に優しい七草粥とコーヒーで健康を願う",
+    "keywords": ["七草粥", "健康", "和食", "伝統"],
+    "prompt_addition": "with traditional Japanese seven herbs porridge, gentle and healthy atmosphere"
+  },
+  "02-03": {
+    "name": "節分",
+    "theme": "豆まきと恵方巻きで福を呼び込む",
+    "keywords": ["節分", "豆まき", "鬼", "恵方巻き"],
+    "prompt_addition": "throwing beans for Setsubun festival, with oni mask and lucky direction sushi roll"
+  },
+  "02-14": {
+    "name": "バレンタインデー",
+    "theme": "チョコレートとコーヒーの最高の組み合わせ",
+    "keywords": ["バレンタイン", "チョコレート", "愛", "ハート"],
+    "prompt_addition": "surrounded by heart-shaped chocolates and pink decorations, romantic Valentine's Day atmosphere"
+  },
+  "03-03": {
+    "name": "ひな祭り",
+    "theme": "桃の節句とコーヒーで春を感じる",
+    "keywords": ["ひな祭り", "桃の節句", "雛人形", "春"],
+    "prompt_addition": "celebrating Hinamatsuri with traditional dolls and peach blossoms, spring festival atmosphere"
+  },
+  "03-14": {
+    "name": "ホワイトデー",
+    "theme": "お返しのスイーツとコーヒーで感謝を伝える",
+    "keywords": ["ホワイトデー", "お返し", "スイーツ", "感謝"],
+    "prompt_addition": "with white chocolate and marshmallows for White Day, grateful and sweet atmosphere"
+  },
+  "04-01": {
+    "name": "エイプリルフール",
+    "theme": "楽しいいたずらとコーヒーで笑顔の一日",
+    "keywords": ["エイプリルフール", "いたずら", "笑顔", "ユーモア"],
+    "prompt_addition": "playing April Fools pranks with playful expression, humorous and fun atmosphere"
+  },
+  "04-08": {
+    "name": "花祭り",
+    "theme": "お釈迦様の誕生日と春の花々",
+    "keywords": ["花祭り", "桜", "春", "お祝い"],
+    "prompt_addition": "celebrating Buddha's birthday with cherry blossoms and spring flowers"
+  },
+  "05-05": {
+    "name": "こどもの日",
+    "theme": "こいのぼりと柏餅で子供の成長を祝う",
+    "keywords": ["こどもの日", "こいのぼり", "柏餅", "端午の節句"],
+    "prompt_addition": "with carp streamers (koinobori) flying in the wind, Children's Day celebration"
+  },
+  "05-11": {
+    "name": "母の日",
+    "theme": "お母さんに感謝のコーヒーを",
+    "keywords": ["母の日", "感謝", "カーネーション", "ありがとう"],
+    "prompt_addition": "with carnation flowers and thank you message for Mother's Day, warm and grateful"
+  },
+  "06-01": {
+    "name": "モカの誕生日",
+    "theme": "ぼくの誕生日！みんなありがとう！",
+    "keywords": ["誕生日", "6月", "お祝い", "ケーキ"],
+    "prompt_addition": "celebrating birthday with party hat, birthday cake and candles, joyful celebration"
+  },
+  "06-16": {
+    "name": "父の日",
+    "theme": "お父さんと一緒にコーヒータイム",
+    "keywords": ["父の日", "感謝", "コーヒー", "ありがとう"],
+    "prompt_addition": "celebrating Father's Day with necktie and coffee, grateful atmosphere"
+  },
+  "07-07": {
+    "name": "七夕",
+    "theme": "短冊に願いを込めて星空の下でコーヒー",
+    "keywords": ["七夕", "願い事", "短冊", "天の川"],
+    "prompt_addition": "under starry Tanabata night sky with wish papers (tanzaku) and bamboo decorations"
+  },
+  "08-15": {
+    "name": "お盆",
+    "theme": "ご先祖様を迎えてゆっくりコーヒータイム",
+    "keywords": ["お盆", "夏休み", "帰省", "家族"],
+    "prompt_addition": "during Obon festival with lanterns and peaceful family atmosphere"
+  },
+  "09-23": {
+    "name": "秋分の日",
+    "theme": "秋の訪れとコーヒーで季節を感じる",
+    "keywords": ["秋分", "秋", "紅葉", "季節"],
+    "prompt_addition": "celebrating autumn equinox with falling leaves and seasonal atmosphere"
+  },
+  "10-31": {
+    "name": "ハロウィン",
+    "theme": "トリック・オア・トリート！コーヒーでハロウィンパーティー",
+    "keywords": ["ハロウィン", "仮装", "かぼちゃ", "お菓子"],
+    "prompt_addition": "in Halloween costume with pumpkins and trick-or-treat atmosphere, spooky but cute"
+  },
+  "11-23": {
+    "name": "勤労感謝の日",
+    "theme": "働く人たちに感謝のコーヒーを",
+    "keywords": ["勤労感謝", "お疲れ様", "感謝", "休息"],
+    "prompt_addition": "celebrating Labor Thanksgiving Day with grateful message and relaxing coffee break"
+  },
+  "12-24": {
+    "name": "クリスマスイブ",
+    "theme": "聖なる夜にホットコーヒーで温まろう",
+    "keywords": ["クリスマスイブ", "聖夜", "プレゼント", "ロマンチック"],
+    "prompt_addition": "on Christmas Eve with presents and romantic snowy atmosphere, warm and cozy"
+  },
+  "12-25": {
+    "name": "クリスマス",
+    "theme": "メリークリスマス！温かいコーヒーと共に",
+    "keywords": ["クリスマス", "サンタ", "ツリー", "プレゼント"],
+    "prompt_addition": "wearing Santa hat with Christmas tree and presents, festive holiday atmosphere"
+  },
+  "12-31": {
+    "name": "大晦日",
+    "theme": "一年の締めくくりにコーヒーで振り返り",
+    "keywords": ["大晦日", "年越し", "振り返り", "感謝"],
+    "prompt_addition": "on New Year's Eve reflecting on the year with peaceful atmosphere"
+  },
+  "seasonal": {
+    "spring": {
+      "months": [3, 4, 5],
+      "theme": "春の訪れとコーヒーで新しい季節を楽しむ",
+      "keywords": ["春", "桜", "新生活", "暖かい"],
+      "prompt_addition": "in spring season with cherry blossoms and fresh green leaves, warm and hopeful"
+    },
+    "summer": {
+      "months": [6, 7, 8],
+      "theme": "暑い夏にアイスコーヒーで涼しく",
+      "keywords": ["夏", "アイスコーヒー", "涼しい", "海"],
+      "prompt_addition": "in summer season with iced coffee, beach and sunshine, cool and refreshing"
+    },
+    "autumn": {
+      "months": [9, 10, 11],
+      "theme": "秋の夜長にホットコーヒーで読書タイム",
+      "keywords": ["秋", "紅葉", "読書", "芸術"],
+      "prompt_addition": "in autumn season with colorful fall leaves and cozy atmosphere, warm and artistic"
+    },
+    "winter": {
+      "months": [12, 1, 2],
+      "theme": "寒い冬にホットコーヒーで温まろう",
+      "keywords": ["冬", "雪", "温かい", "こたつ"],
+      "prompt_addition": "in winter season with snow and warm coffee, cozy and comfortable atmosphere"
+    }
+  },
+  "weekday": {
+    "monday": {
+      "theme": "月曜日の朝、コーヒーで一週間をスタート",
+      "keywords": ["月曜日", "週の始まり", "頑張ろう", "モーニングコーヒー"]
+    },
+    "tuesday": {
+      "theme": "火曜日もコーヒーと共に頑張ろう",
+      "keywords": ["火曜日", "頑張る", "リフレッシュ", "コーヒーブレイク"]
+    },
+    "wednesday": {
+      "theme": "水曜日、週の真ん中でひと息つこう",
+      "keywords": ["水曜日", "週の真ん中", "ひと息", "リラックス"]
+    },
+    "thursday": {
+      "theme": "木曜日の朝、コーヒーで元気をチャージ",
+      "keywords": ["木曜日", "もうすぐ週末", "元気", "モーニング"]
+    },
+    "friday": {
+      "theme": "金曜日の夜、週末を前にコーヒーで乾杯",
+      "keywords": ["金曜日", "週末", "お疲れ様", "楽しみ"]
+    },
+    "saturday": {
+      "theme": "土曜日はゆっくりコーヒーを楽しもう",
+      "keywords": ["土曜日", "週末", "ゆっくり", "リラックス"]
+    },
+    "sunday": {
+      "theme": "日曜日の午後、コーヒーと共にのんびり",
+      "keywords": ["日曜日", "休日", "のんびり", "癒し"]
+    }
+  },
+  "weather": {
+    "rainy": {
+      "theme": "雨の日はコーヒーの香りで心を温めて",
+      "keywords": ["雨", "梅雨", "しっとり", "室内"],
+      "prompt_addition": "on rainy day with umbrella and rain drops, cozy indoor atmosphere with coffee steam"
+    },
+    "sunny": {
+      "theme": "晴れた日はテラスでコーヒータイム",
+      "keywords": ["晴れ", "太陽", "気持ちいい", "テラス"],
+      "prompt_addition": "on sunny day with bright sunshine and outdoor terrace, cheerful and bright"
+    },
+    "snowy": {
+      "theme": "雪の日は温かいコーヒーで体を温めて",
+      "keywords": ["雪", "寒い", "温かい", "ホット"],
+      "prompt_addition": "on snowy day with snowflakes falling, warm coffee creating cozy atmosphere"
+    }
+  },
+  "default": {
+    "theme": "今日も一日、コーヒーと共に",
+    "keywords": ["日常", "コーヒータイム", "癒し", "リラックス"],
+    "prompt_addition": "enjoying daily coffee time with peaceful and relaxing atmosphere"
+  }
+}
