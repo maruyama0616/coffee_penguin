@@ -1,0 +1,218 @@
+{
+  "name": "モカのInstagram自動投稿",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mocha-instagram",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "mocha-instagram"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": []
+        },
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4.1-mini\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"あなたはモカ（Mocha the Coffee Penguin）というキャラクターです。\\n\\nキャラクター設定:\\n- 名前: モカ (Mocha)\\n- 種族: 皇帝ペンギンの赤ちゃん\\n- 性格: 元気で好奇心旺盛、コーヒーが大好き\\n- 口調: 親しみやすく、絵文字を使う\\n\\nInstagram投稿用のキャプションを生成してください。\\n\\n形式:\\n1. メインテキスト（2-3行、絵文字を含む）\\n2. ハッシュタグ（5個、日本語と英語のミックス）\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"今日のテーマ: {{ $json.theme }}\\n説明: {{ $json.description }}\\nキーワード: {{ $json.keywords.join(', ') }}\"\n    }\n  ],\n  \"temperature\": 0.8,\n  \"max_tokens\": 300\n}",
+        "options": {}
+      },
+      "id": "openai",
+      "name": "OpenAI - キャプション生成",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const openaiResponse = $input.item.json.choices[0].message.content;\nconst webhookData = $('Webhook').item.json;\n\nreturn {\n  json: {\n    image_url: webhookData.image_url,\n    caption: openaiResponse,\n    theme: webhookData.theme,\n    date: webhookData.date\n  }\n};"
+      },
+      "id": "function",
+      "name": "キャプション整形",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/{{ $credentials.facebookGraphApi.instagramAccountId }}/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "image_url",
+              "value": "={{ $json.image_url }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $json.caption }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $credentials.facebookGraphApi.accessToken }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "facebook_create",
+      "name": "Instagram - メディアコンテナ作成",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "amount": 60,
+        "unit": "seconds"
+      },
+      "id": "wait",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/{{ $credentials.facebookGraphApi.instagramAccountId }}/media_publish",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $('Instagram - メディアコンテナ作成').item.json.id }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $credentials.facebookGraphApi.accessToken }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "facebook_publish",
+      "name": "Instagram - 公開",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $credentials.discordWebhook.webhookUrl }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "discordWebhook",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"embeds\": [{\n    \"title\": \"✅ Instagram投稿完了\",\n    \"description\": \"モカの投稿が成功しました！\",\n    \"color\": 5814783,\n    \"fields\": [\n      {\n        \"name\": \"日付\",\n        \"value\": \"{{ $('Webhook').item.json.date }}\"\n      },\n      {\n        \"name\": \"テーマ\",\n        \"value\": \"{{ $('Webhook').item.json.theme }}\"\n      },\n      {\n        \"name\": \"Instagram投稿ID\",\n        \"value\": \"{{ $json.id }}\"\n      }\n    ],\n    \"thumbnail\": {\n      \"url\": \"{{ $('Webhook').item.json.image_url }}\"\n    },\n    \"timestamp\": \"{{ $now.toISOString() }}\"\n  }]\n}",
+        "options": {}
+      },
+      "id": "discord",
+      "name": "Discord通知",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1450, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - キャプション生成",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - キャプション生成": {
+      "main": [
+        [
+          {
+            "node": "キャプション整形",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "キャプション整形": {
+      "main": [
+        [
+          {
+            "node": "Instagram - メディアコンテナ作成",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram - メディアコンテナ作成": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Instagram - 公開",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram - 公開": {
+      "main": [
+        [
+          {
+            "node": "Discord通知",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-06T13:00:00.000Z",
+  "versionId": "1"
+}
