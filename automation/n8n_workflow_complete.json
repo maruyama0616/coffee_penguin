@@ -1,0 +1,281 @@
+{
+  "name": "モカのInstagram自動投稿（完全版）",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 0 19 * * *"
+            }
+          ]
+        }
+      },
+      "id": "schedule",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const date_theme = require('/home/ubuntu/coffee_penguin/automation/date_theme.py');\nconst today = new Date();\nconst theme_data = date_theme.get_theme_for_date(today);\n\nreturn {\n  json: {\n    prompt: `モカ（Mocha the Coffee Penguin）というキャラクターが、${theme_data.theme}をテーマにコーヒーを楽しんでいるシーン。背景には${theme_data.description}。かわいらしく、温かみのあるイラスト風。`,\n    theme: theme_data.theme,\n    event_name: theme_data.event_name,\n    description: theme_data.description,\n    keywords: theme_data.keywords,\n    date: today.toISOString().split('T')[0]\n  }\n};"
+      },
+      "id": "get_theme",
+      "name": "テーマ取得",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd /home/ubuntu/coffee_penguin/automation && python3 full_automation.py --prompt \"{{ $json.prompt }}\" --type image --prefix mocha --aspect-ratio 3:4"
+      },
+      "id": "generate_upload",
+      "name": "画像生成→Cloudinaryアップロード→スプレッドシート記録",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const output = $input.item.json.stdout;\nconst jsonMatch = output.match(/\\{[\\s\\S]*\"cloudinary_url\"[\\s\\S]*\\}/g);\n\nif (!jsonMatch) {\n  throw new Error('Cloudinary URLが見つかりません');\n}\n\nconst result = JSON.parse(jsonMatch[jsonMatch.length - 1]);\n\nreturn {\n  json: {\n    image_url: result.cloudinary_url,\n    filename: result.filename,\n    theme: $('テーマ取得').item.json.theme,\n    event_name: $('テーマ取得').item.json.event_name,\n    description: $('テーマ取得').item.json.description,\n    keywords: $('テーマ取得').item.json.keywords,\n    date: $('テーマ取得').item.json.date\n  }\n};"
+      },
+      "id": "parse_result",
+      "name": "結果パース",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4.1-mini\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"あなたはモカ（Mocha the Coffee Penguin）というキャラクターです。\\n\\nキャラクター設定:\\n- 名前: モカ (Mocha)\\n- 種族: 皇帝ペンギンの赤ちゃん\\n- 性格: 元気で好奇心旺盛、コーヒーが大好き\\n- 口調: 親しみやすく、絵文字を使う\\n\\nInstagram投稿用のキャプションを生成してください。\\n\\n形式:\\n1. メインテキスト（2-3行、絵文字を含む）\\n2. 改行\\n3. ハッシュタグ（5個、日本語と英語のミックス、スペース区切り）\\n\\n例:\\nやっと金曜日だね！☕✨\\n週末前の温かいコーヒータイムで、心も体もほっこり🐧💕\\n\\n#金曜日 #癒し #コーヒー #CoffeePenguin #MochaThePenguin\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"今日のテーマ: {{ $json.theme }}\\nイベント: {{ $json.event_name }}\\n説明: {{ $json.description }}\\nキーワード: {{ $json.keywords.join(', ') }}\"\n    }\n  ],\n  \"temperature\": 0.8,\n  \"max_tokens\": 300\n}",
+        "options": {}
+      },
+      "id": "openai",
+      "name": "OpenAI - キャプション生成",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1050, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "1",
+          "name": "OpenAI API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "const openaiResponse = $input.item.json.choices[0].message.content;\nconst parsedData = $('結果パース').item.json;\n\nreturn {\n  json: {\n    image_url: parsedData.image_url,\n    caption: openaiResponse,\n    filename: parsedData.filename,\n    theme: parsedData.theme,\n    event_name: parsedData.event_name,\n    date: parsedData.date\n  }\n};"
+      },
+      "id": "function",
+      "name": "キャプション整形",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/{{ $env.INSTAGRAM_ACCOUNT_ID }}/media",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "image_url",
+              "value": "={{ $json.image_url }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $json.caption }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $env.PAGE_ACCESS_TOKEN }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "instagram_create",
+      "name": "Instagram - メディアコンテナ作成",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1450, 300]
+    },
+    {
+      "parameters": {
+        "amount": 60,
+        "unit": "seconds"
+      },
+      "id": "wait",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [1650, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/{{ $env.INSTAGRAM_ACCOUNT_ID }}/media_publish",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $('Instagram - メディアコンテナ作成').item.json.id }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $env.PAGE_ACCESS_TOKEN }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "instagram_publish",
+      "name": "Instagram - 公開",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1850, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.DISCORD_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"embeds\": [{\n    \"title\": \"✅ Instagram投稿完了\",\n    \"description\": \"モカの投稿が成功しました！\",\n    \"color\": 5814783,\n    \"fields\": [\n      {\n        \"name\": \"日付\",\n        \"value\": \"{{ $('結果パース').item.json.date }}\"\n      },\n      {\n        \"name\": \"テーマ\",\n        \"value\": \"{{ $('結果パース').item.json.theme }}\"\n      },\n      {\n        \"name\": \"イベント\",\n        \"value\": \"{{ $('結果パース').item.json.event_name }}\"\n      },\n      {\n        \"name\": \"ファイル名\",\n        \"value\": \"{{ $('結果パース').item.json.filename }}\"\n      },\n      {\n        \"name\": \"Instagram投稿ID\",\n        \"value\": \"{{ $('Instagram - 公開').item.json.id }}\"\n      }\n    ],\n    \"thumbnail\": {\n      \"url\": \"{{ $('結果パース').item.json.image_url }}\"\n    },\n    \"timestamp\": \"{{ $now.toISOString() }}\"\n  }]\n}",
+        "options": {}
+      },
+      "id": "discord",
+      "name": "Discord通知",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [2050, 300]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "テーマ取得",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "テーマ取得": {
+      "main": [
+        [
+          {
+            "node": "画像生成→Cloudinaryアップロード→スプレッドシート記録",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "画像生成→Cloudinaryアップロード→スプレッドシート記録": {
+      "main": [
+        [
+          {
+            "node": "結果パース",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "結果パース": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - キャプション生成",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - キャプション生成": {
+      "main": [
+        [
+          {
+            "node": "キャプション整形",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "キャプション整形": {
+      "main": [
+        [
+          {
+            "node": "Instagram - メディアコンテナ作成",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram - メディアコンテナ作成": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Instagram - 公開",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram - 公開": {
+      "main": [
+        [
+          {
+            "node": "Discord通知",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-10T00:00:00.000Z",
+  "versionId": "3"
+}
