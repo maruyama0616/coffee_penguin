@@ -1,0 +1,669 @@
+{
+  "name": "モカのInstagram自動投稿（N8N完結版）",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 0 19 * * *"
+            }
+          ]
+        }
+      },
+      "id": "schedule_trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [250, 400],
+      "notes": "毎日日本時間19時に自動実行"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.GOOGLE_SPREADSHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "テーマ管理",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "date",
+              "displayName": "日付",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "theme",
+              "displayName": "テーマ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "ステータス",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get_theme_from_sheet",
+      "name": "テーマ取得（Google Sheets）",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [450, 400],
+      "notes": "Google Sheetsから「pending」ステータスのテーマを取得",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "pending",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "filter_pending",
+      "name": "Pendingのみフィルター",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [650, 400],
+      "notes": "ステータスが「pending」の行のみ処理"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "prompt",
+              "value": "=モカ（Mocha the Coffee Penguin）というキャラクターが、{{ $json.theme }}をテーマにコーヒーを楽しんでいるシーン。かわいらしく、温かみのあるイラスト風。縦長の3:4のアスペクト比。",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "filename",
+              "value": "=mocha_{{ $now.format('yyyyMMdd_HHmmss') }}",
+              "type": "string"
+            },
+            {
+              "id": "3",
+              "name": "date",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "4",
+              "name": "theme",
+              "value": "={{ $json.theme }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "prepare_prompt",
+      "name": "プロンプト準備",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [850, 300],
+      "notes": "画像生成用のプロンプトとファイル名を準備"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "={{ $env.GEMINI_API_KEY }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{\n      \"text\": \"{{ $json.prompt }}\"\n    }]\n  }],\n  \"generationConfig\": {\n    \"response_modalities\": [\"image\"],\n    \"response_mime_type\": \"image/jpeg\"\n  }\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      },
+      "id": "generate_image_gemini",
+      "name": "画像生成（Gemini）",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1050, 300],
+      "notes": "Gemini 2.0 Flash Expで画像を生成"
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "binaryProperty": "data",
+        "publicId": "={{ $('プロンプト準備').item.json.filename }}",
+        "folder": "mocha",
+        "options": {
+          "resourceType": "image"
+        }
+      },
+      "id": "upload_to_cloudinary",
+      "name": "Cloudinaryにアップロード",
+      "type": "n8n-nodes-base.cloudinary",
+      "typeVersion": 1,
+      "position": [1250, 300],
+      "notes": "生成された画像をCloudinaryにアップロード",
+      "credentials": {
+        "cloudinaryApi": {
+          "id": "1",
+          "name": "Cloudinary account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "cloudinary_url",
+              "value": "={{ $json.secure_url }}",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "filename",
+              "value": "={{ $('プロンプト準備').item.json.filename }}",
+              "type": "string"
+            },
+            {
+              "id": "3",
+              "name": "prompt",
+              "value": "={{ $('プロンプト準備').item.json.prompt }}",
+              "type": "string"
+            },
+            {
+              "id": "4",
+              "name": "date",
+              "value": "={{ $('プロンプト準備').item.json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "5",
+              "name": "theme",
+              "value": "={{ $('プロンプト準備').item.json.theme }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "extract_url",
+      "name": "URL抽出",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1450, 300],
+      "notes": "Cloudinary URLを抽出"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.GOOGLE_SPREADSHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "メディア管理",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "filename",
+              "displayName": "ファイル名",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cloudinary_url",
+              "displayName": "Cloudinary URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "type",
+              "displayName": "タイプ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "prompt",
+              "displayName": "プロンプト",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "日付",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "record_to_sheet",
+      "name": "スプレッドシートに記録",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1650, 300],
+      "notes": "ファイル名とURLをスプレッドシートに記録",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.OPENAI_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4.1-mini\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"あなたはモカ（Mocha the Coffee Penguin）というキャラクターです。\\n\\nキャラクター設定:\\n- 名前: モカ (Mocha)\\n- 種族: 皇帝ペンギンの赤ちゃん\\n- 性格: 元気で好奇心旺盛、コーヒーが大好き\\n- 口調: 親しみやすく、絵文字を使う\\n\\nInstagram投稿用のキャプションを生成してください。\\n\\n形式:\\n1. メインテキスト（2-3行、絵文字を含む）\\n2. 改行\\n3. ハッシュタグ（5個、日本語と英語のミックス、スペース区切り）\\n\\n例:\\nやっと金曜日だね！☕✨\\n週末前の温かいコーヒータイムで、心も体もほっこり🐧💕\\n\\n#金曜日 #癒し #コーヒー #CoffeePenguin #MochaThePenguin\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"今日のテーマ: {{ $('URL抽出').item.json.theme }}\"\n    }\n  ],\n  \"temperature\": 0.8,\n  \"max_tokens\": 300\n}",
+        "options": {}
+      },
+      "id": "generate_caption",
+      "name": "キャプション生成（OpenAI）",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1850, 300],
+      "notes": "OpenAI GPT-4.1 Miniでキャプションを生成"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "caption",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "image_url",
+              "value": "={{ $('URL抽出').item.json.cloudinary_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "prepare_instagram",
+      "name": "Instagram投稿準備",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [2050, 300],
+      "notes": "Instagram投稿用のデータを準備"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/{{ $env.INSTAGRAM_ACCOUNT_ID }}/media",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "image_url",
+              "value": "={{ $json.image_url }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $json.caption }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $env.PAGE_ACCESS_TOKEN }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "create_instagram_container",
+      "name": "Instagram - メディアコンテナ作成",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2250, 300],
+      "notes": "Instagram Graph APIでメディアコンテナを作成"
+    },
+    {
+      "parameters": {
+        "amount": 60,
+        "unit": "seconds"
+      },
+      "id": "wait_for_processing",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [2450, 300],
+      "notes": "Instagramの画像処理を待つ（60秒）"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/{{ $env.INSTAGRAM_ACCOUNT_ID }}/media_publish",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $('Instagram - メディアコンテナ作成').item.json.id }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $env.PAGE_ACCESS_TOKEN }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "publish_instagram",
+      "name": "Instagram - 公開",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2650, 300],
+      "notes": "Instagramに投稿を公開"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.GOOGLE_SPREADSHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "テーマ管理",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "posted"
+          },
+          "matchingColumns": ["date"],
+          "schema": [
+            {
+              "id": "status",
+              "displayName": "ステータス",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "update_status",
+      "name": "ステータス更新",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [2850, 300],
+      "notes": "テーマ管理シートのステータスを「posted」に更新",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "テーマ取得（Google Sheets）",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "テーマ取得（Google Sheets）": {
+      "main": [
+        [
+          {
+            "node": "Pendingのみフィルター",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pendingのみフィルター": {
+      "main": [
+        [
+          {
+            "node": "プロンプト準備",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "プロンプト準備": {
+      "main": [
+        [
+          {
+            "node": "画像生成（Gemini）",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "画像生成（Gemini）": {
+      "main": [
+        [
+          {
+            "node": "Cloudinaryにアップロード",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cloudinaryにアップロード": {
+      "main": [
+        [
+          {
+            "node": "URL抽出",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URL抽出": {
+      "main": [
+        [
+          {
+            "node": "スプレッドシートに記録",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "スプレッドシートに記録": {
+      "main": [
+        [
+          {
+            "node": "キャプション生成（OpenAI）",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "キャプション生成（OpenAI）": {
+      "main": [
+        [
+          {
+            "node": "Instagram投稿準備",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram投稿準備": {
+      "main": [
+        [
+          {
+            "node": "Instagram - メディアコンテナ作成",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram - メディアコンテナ作成": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Instagram - 公開",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram - 公開": {
+      "main": [
+        [
+          {
+            "node": "ステータス更新",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-10T00:00:00.000Z",
+  "versionId": "1"
+}
